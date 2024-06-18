@@ -42,3 +42,12 @@ def register_user(request):
         return render(request, 'register.html', {'form': form})
     
     return render(request, 'register.html', {'form': form})
+
+def candidate_record(request, pk):
+    if request.user.is_authenticated:
+        candidate_record = Record.objects.get(id=pk)
+        return render(request, 'record.html', {'candidate_record': candidate_record})
+    else:
+       messages.success(request, 'You must be logged in to view candidates.')
+       return redirect('home')
+    
