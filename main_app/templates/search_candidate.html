@@ -14,18 +14,11 @@
 <br>
 
 
-{% if searched not in record %}
-
-<p>No candidates found</p>
-
-{% endif %}
-
-
 {% for record in record %}
 
 <div class="card">
   <div class="card-header">
-  Candidate:
+    <a href="{% url 'record' record.id %}">Candidate:</a>
   </div>
   <div class="card-body">
 
