@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="col-md-6">
+  <h1>Search</h1>
+</div>
+
+<br>
+
+{% if searched %}
+<h2>{{ searched }}</h2>
+<br>
+
+
+{% if searched not in record %}
+
+<p>No candidates found</p>
+
+{% endif %}
+
+
+{% for record in record %}
+
+<div class="card">
+  <div class="card-header">
+  Candidate:
+  </div>
+  <div class="card-body">
+
+    <p class="card-text">
+    <ul>
+      {% if record.first_name %}
+      <li>{{ record.first_name}}</li>
+      {% endif %}
+
+      {% if record.last_name %}
+      <li>{{ record.last_name }}</li>
+      {% endif %}
+
+      {% if record.email %}
+      <li>{{ record.email }}</li>
+      {% endif %}
+
+      {% if record.phone %}
+      <li>{{ record.phone }}</li>
+      {% endif %}
+
+      {% if record.address %}
+      <li>{{ record.address }}</li>
+      {% endif %}
+
+    </ul>
+    </p>
+  </div>
+
+
+  {% endfor %}
+
+  {% else %}
+
+  <p>Please use the search bar to search.</p>
+
+  {% endif %}
+
+  {% endif %}
+
+  {% endblock %}

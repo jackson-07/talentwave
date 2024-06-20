@@ -86,3 +86,16 @@ def update_candidate(request, pk):
 	else:
 		messages.success(request, 'You must be logged in to update candidates.')
 		return redirect('home')
+
+def search_candidate(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            searched = request.POST['searched']
+            record = Record.objects.filter(first_name__contains=searched)
+            return render(request, 'search_candidate.html', {'searched':searched, 'record': record})
+        else:
+            return render (request, 'search_candidate.html', {})
+    else:
+        messages.success(request, 'You need to be logged in to search')
+        return render('home')
+    
