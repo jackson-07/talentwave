@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddCandidateForm
 from .models import Record
+from .models import Job
 
 def home(request):
     records = Record.objects.all()
@@ -99,3 +100,10 @@ def search_candidate(request):
         messages.success(request, 'You need to be logged in to search')
         return render('home')
     
+def job(request):
+    if request.user.is_authenticated:
+        jobs = Job.objects.all()
+        return render(request, 'job.html', {'job': jobs})
+    else:
+       messages.success(request, 'You must be logged in to view Jobs.')
+       return redirect('home')   
