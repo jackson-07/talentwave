@@ -103,6 +103,7 @@ def search_candidate(request):
 def job(request):
     if request.user.is_authenticated:
         jobs = Job.objects.all()
+        print(jobs)
         return render(request, 'job.html', {'job': jobs})
     else:
        messages.success(request, 'You must be logged in to view Jobs.')

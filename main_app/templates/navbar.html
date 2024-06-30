@@ -7,16 +7,16 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ml-auto">
         
         {% if user.is_authenticated %}
-        
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'job' %}">Jobs</a>
-        </li>
 
         <form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'search_candidate' %}"">
           {% csrf_token %}
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'jobs' %}">Jobs</a>
+        </li>
 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Logout</a>
