@@ -5,7 +5,7 @@ from .forms import SignUpForm, AddCandidateForm
 from .models import Candidate, Job
 
 def home(request):
-    records = Candidate.objects.all()
+    candidates = Candidate.objects.all()
     
     if request.method == 'POST':
         username = request.POST['username']
@@ -19,7 +19,7 @@ def home(request):
             messages.success(request, 'There was an error logging in, please try again.')
             return redirect('home')
     else:
-        return render(request, 'home.html', {'records': records})
+        return render(request, 'home.html', {'candidates': candidates})
 
 def logout_user(request):
     logout(request)
@@ -46,7 +46,7 @@ def register_user(request):
 def candidate_record(request, pk):
     if request.user.is_authenticated:
         candidate_record = Candidate.objects.get(id=pk)
-        return render(request, 'record.html', {'candidate_record': candidate_record})
+        return render(request, 'candidate.html', {'candidate_record': candidate_record})
     else:
        messages.success(request, 'You must be logged in to view candidates.')
        return redirect('home')
@@ -93,9 +93,9 @@ def search(request):
             searched = request.POST['searched']
             candidate = Candidate.objects.filter(first_name__icontains=searched)
             job = Job.objects.filter(name__icontains=searched)
-            return render(request, 'search_candidate.html', {'searched':searched, 'candidate': candidate, 'job': job})
+            return render(request, 'search.html', {'searched':searched, 'candidate': candidate, 'job': job})
         else:
-            return render (request, 'search_candidate.html', {})
+            return render (request, 'search.html', {})
     else:
         messages.success(request, 'You need to be logged in to search')
         return render('home')
@@ -103,7 +103,7 @@ def search(request):
 def job(request):
     if request.user.is_authenticated:
         jobs = Job.objects.all()
-        return render(request, 'job.html', {'job': jobs})
+        return render(request, 'job.html', {'jobs': jobs})
     else:
        messages.success(request, 'You must be logged in to view Jobs.')
        return redirect('home')   

@@ -14,34 +14,34 @@
 <br>
 
 
-{% for record in record %}
+{% for candidate in candidate %}
 
 <div class="card">
   <div class="card-header">
-    <a href="{% url 'record' record.id %}">Candidate Profile:</a>
+    <a href="{% url 'candidate' candidate.id %}">Candidate Profile:</a>
   </div>
   <div class="card-body">
 
     <p class="card-text">
     <ul>
-      {% if record.first_name %}
-      <li>{{ record.first_name}}</li>
+      {% if candidate.first_name %}
+      <li>{{ candidate.first_name}}</li>
       {% endif %}
 
-      {% if record.last_name %}
-      <li>{{ record.last_name }}</li>
+      {% if candidate.last_name %}
+      <li>{{ candidate.last_name }}</li>
       {% endif %}
 
-      {% if record.email %}
-      <li>{{ record.email }}</li>
+      {% if candidate.email %}
+      <li>{{ candidate.email }}</li>
       {% endif %}
 
-      {% if record.phone %}
-      <li>{{ record.phone }}</li>
+      {% if candidate.phone %}
+      <li>{{ candidate.phone }}</li>
       {% endif %}
 
-      {% if record.address %}
-      <li>{{ record.address }}</li>
+      {% if candidate.address %}
+      <li>{{ candidate.address }}</li>
       {% endif %}
 
     </ul>
