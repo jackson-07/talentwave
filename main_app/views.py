@@ -2,11 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddCandidateForm
-from .models import Record
-from .models import Job
+from .models import Candidate, Job
 
 def home(request):
-    records = Record.objects.all()
+    records = Candidate.objects.all()
     
     if request.method == 'POST':
         username = request.POST['username']
@@ -46,7 +45,7 @@ def register_user(request):
 
 def candidate_record(request, pk):
     if request.user.is_authenticated:
-        candidate_record = Record.objects.get(id=pk)
+        candidate_record = Candidate.objects.get(id=pk)
         return render(request, 'record.html', {'candidate_record': candidate_record})
     else:
        messages.success(request, 'You must be logged in to view candidates.')
@@ -54,7 +53,7 @@ def candidate_record(request, pk):
     
 def delete_candidate(request, pk):
     if request.user.is_authenticated:
-        delete_record = Record.objects.get(id=pk)
+        delete_record = Candidate.objects.get(id=pk)
         delete_record.delete()
         messages.success(request, 'Candidate deleted.')
         return redirect('home')
@@ -77,7 +76,7 @@ def add_candidate(request):
 
 def update_candidate(request, pk):
 	if request.user.is_authenticated:
-		current_record = Record.objects.get(id=pk)
+		current_record = Candidate.objects.get(id=pk)
 		form = AddCandidateForm(request.POST or None, instance=current_record)
 		if form.is_valid():
 			form.save()
@@ -88,12 +87,13 @@ def update_candidate(request, pk):
 		messages.success(request, 'You must be logged in to update candidates.')
 		return redirect('home')
 
-def search_candidate(request):
+def search(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             searched = request.POST['searched']
-            record = Record.objects.filter(first_name__contains=searched)
-            return render(request, 'search_candidate.html', {'searched':searched, 'record': record})
+            candidate = Candidate.objects.filter(first_name__icontains=searched)
+            job = Job.objects.filter(name__icontains=searched)
+            return render(request, 'search_candidate.html', {'searched':searched, 'candidate': candidate, 'job': job})
         else:
             return render (request, 'search_candidate.html', {})
     else:
@@ -103,7 +103,6 @@ def search_candidate(request):
 def job(request):
     if request.user.is_authenticated:
         jobs = Job.objects.all()
-        print(jobs)
         return render(request, 'job.html', {'job': jobs})
     else:
        messages.success(request, 'You must be logged in to view Jobs.')
