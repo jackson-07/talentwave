@@ -138,4 +138,16 @@ def add_job(request):
 	else:
 		messages.success(request, 'You must be logged in to add candidates')
 		return redirect('home')
-       
+
+def update_job(request, pk):
+	if request.user.is_authenticated:
+		current_job = Job.objects.get(id=pk)
+		form = AddJobForm(request.POST or None, instance=current_job)
+		if form.is_valid():
+			form.save()
+			messages.success(request, 'Job has been updated.')
+			return redirect('jobs')
+		return render(request, 'update_job.html', {'form': form})
+	else:
+		messages.success(request, 'You must be logged in to update jobs.')
+		return redirect('home')

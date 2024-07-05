@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
 <div class="card">
   <div class="card-header"><strong>
     	{{ candidate_record.first_name }} 
 		{{ candidate_record.last_name }}</strong>
   </div>
   <div class="card-body">
-
-
 
 <p class="card-text">
 <strong>Email: </strong><a href="mailto:{{ candidate.email }}">{{ candidate_record.email }}</a></p>
