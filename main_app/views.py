@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignUpForm, AddCandidateForm
+from .forms import SignUpForm, AddCandidateForm, AddJobForm
 from .models import Candidate, Job
 
 def home(request):
@@ -125,3 +125,17 @@ def delete_job(request, pk):
     else:
         messages.success(request, 'You must be logged in to delete jobs.')
         return redirect('home')
+    
+def add_job(request):
+	form = AddJobForm(request.POST or None)
+	if request.user.is_authenticated:
+		if request.method == 'POST':
+			if form.is_valid():
+				add_job = form.save()
+				messages.success(request, 'Job Added.')
+				return redirect('jobs')
+		return render(request, 'add_job.html', {'form': form})
+	else:
+		messages.success(request, 'You must be logged in to add candidates')
+		return redirect('home')
+       

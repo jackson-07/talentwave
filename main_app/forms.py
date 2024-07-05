@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Candidate
+from .models import Candidate, Job
 
 class SignUpForm(UserCreationForm):
 	email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Email Address'}))
@@ -45,3 +45,13 @@ class AddCandidateForm(forms.ModelForm):
 	class Meta:
 		model = Candidate
 		exclude = ("user",)
+  
+class AddJobForm(forms.ModelForm):
+    name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Job Name", "class":"form-control"}), label="")
+    company = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Company", "class":"form-control"}), label="")
+    city = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"City", "class":"form-control"}), label="")
+    
+    class Meta:
+        model = Job
+        exclude = ("user",)
+    
