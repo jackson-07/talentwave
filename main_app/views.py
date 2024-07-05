@@ -116,3 +116,12 @@ def jobs_detail(request, pk):
         messages.success(request, 'You must be logged in to view Jobs.')
         return redirect('home')
     
+def delete_job(request, pk):
+    if request.user.is_authenticated:
+        delete_job = Job.objects.get(id=pk)
+        delete_job.delete()
+        messages.success(request, 'Job deleted.')
+        return redirect('jobs')
+    else:
+        messages.success(request, 'You must be logged in to delete jobs.')
+        return redirect('home')

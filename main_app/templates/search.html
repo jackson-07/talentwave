@@ -25,7 +25,7 @@
     <p class="card-text">
     <ul>
       {% if candidate.first_name %}
-      <li>{{ candidate.first_name}}</li>
+      <li>{{ candidate.first_name }}</li>
       {% endif %}
 
       {% if candidate.last_name %}
@@ -42,6 +42,43 @@
 
       {% if candidate.address %}
       <li>{{ candidate.address }}</li>
+      {% endif %}
+
+    </ul>
+    </p>
+  </div>
+
+
+  {% endfor %}
+
+  {% for job in job %}
+
+<div class="card">
+  <div class="card-header">
+    <a href="{% url 'jobs_detail' job.id %}">Job Profile:</a>
+  </div>
+  <div class="card-body">
+
+    <p class="card-text">
+    <ul>
+      {% if job.name %}
+      <li>{{ job.name }}</li>
+      {% endif %}
+
+      {% if job.company %}
+      <li>{{ job.company }}</li>
+      {% endif %}
+
+      {% if job.city %}
+      <li>{{ job.city }}</li>
+      {% endif %}
+
+      {% if job.created_at %}
+      <li>{{ job.created_at }}</li>
+      {% endif %}
+
+      {% if job.id %}
+      <li>{{ job.id }}</li>
       {% endif %}
 
     </ul>
