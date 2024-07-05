@@ -100,10 +100,19 @@ def search(request):
         messages.success(request, 'You need to be logged in to search')
         return render('home')
     
-def job(request):
+def jobs(request):
     if request.user.is_authenticated:
         jobs = Job.objects.all()
-        return render(request, 'job.html', {'jobs': jobs})
+        return render(request, 'jobs.html', {'jobs': jobs})
     else:
        messages.success(request, 'You must be logged in to view Jobs.')
        return redirect('home')   
+   
+def jobs_detail(request, pk):
+    if request.user.is_authenticated:
+        jobs = Job.objects.get(id=pk)
+        return render(request, 'jobs_detail.html', {'jobs': jobs})
+    else:
+        messages.success(request, 'You must be logged in to view Jobs.')
+        return redirect('home')
+    

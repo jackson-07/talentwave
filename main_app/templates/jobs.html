@@ -22,7 +22,7 @@
     {% if jobs %}
     {% for job in jobs %}
     <tr>
-      <td>{{ job.name }}</td>
+      <td><a href="{% url 'jobs_detail' job.id %}">{{ job.name }}</td></a>
       <td>{{ job.company }}</td>
       <td>{{ job.city }}</td>
       <td>{{ job.created_at }}</td>
