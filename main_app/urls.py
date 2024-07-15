@@ -16,7 +16,7 @@ urlpatterns = [
   path('add_job/', views.add_job, name='add_job'),
   path('update_job/<int:pk>', views.update_job, name='update_job'),
   path('apply/<int:job_id>/<int:candidate_id>/', views.apply_to_job, name='apply_to_job'),
-
+  path('unapply/<int:job_id>/<int:candidate_id>/', views.unapply_from_job, name='unapply_from_job'),
   
 ]
 

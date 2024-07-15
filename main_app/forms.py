@@ -50,6 +50,7 @@ class AddJobForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Job Name", "class":"form-control"}), label="")
     company = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Company", "class":"form-control"}), label="")
     city = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"City", "class":"form-control"}), label="")
+    description = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Description", "class":"form-control"}), label="")
     
     class Meta:
         model = Job

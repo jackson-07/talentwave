@@ -1,13 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from .forms import SignUpForm, AddCandidateForm, AddJobForm
 from .models import Candidate, Job, Application
 
 def home(request):
     candidates = Candidate.objects.all()
-    
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -159,11 +157,30 @@ def apply_to_job(request, job_id, candidate_id):
     if request.user.is_authenticated:
         if request.method == 'POST':
             candidate_id = request.POST.get('candidate_id')
-        job = get_object_or_404(Job, id=job_id)
-        candidate = get_object_or_404(Candidate, id=candidate_id)
-        Application.objects.get_or_create(job=job, candidate=candidate)
-        messages.success(request, 'Application successfully submitted!')
-        return redirect('jobs_detail', pk=job_id)
+            job = get_object_or_404(Job, id=job_id)
+            candidate = get_object_or_404(Candidate, id=candidate_id)
+            Application.objects.get_or_create(job=job, candidate=candidate)
+            messages.success(request, 'Application successfully submitted!')
+            return redirect('jobs_detail', pk=job_id)
+    else:
+        messages.success(request, 'You must be logged in.')
+        return redirect('home')
+    
+def unapply_from_job(request, job_id, candidate_id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            job = get_object_or_404(Job, id=job_id)
+            candidate = get_object_or_404(Candidate, id=candidate_id)
+            application = Application.objects.filter(job=job, candidate=candidate).first()
+            if application:
+                application.delete()
+                messages.success(request, 'Application successfully withdrawn!')
+            else:
+                messages.success(request, 'Application not found.')
+            return redirect('jobs_detail', pk=job_id)
+        else:
+            messages.success(request, 'Invalid request method.')
+            return redirect('jobs_detail', pk=job_id)
     else:
         messages.success(request, 'You must be logged in.')
         return redirect('home')

@@ -20,6 +20,7 @@
     {% for application in applications %}
         <li>
             {{ application.candidate.first_name }} {{ application.candidate.last_name }}
+            <a href="{% url 'unapply_from_job' job.id application.candidate.id %}" class="btn btn-warning btn-sm">Remove</a>
         </li>
     {% empty %}
         <li>No applications yet.</li>
