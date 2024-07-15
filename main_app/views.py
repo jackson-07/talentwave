@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from .forms import SignUpForm, AddCandidateForm, AddJobForm
-from .models import Candidate, Job
+from .models import Candidate, Job, Application
 
 def home(request):
     candidates = Candidate.objects.all()
@@ -110,10 +111,12 @@ def jobs(request):
    
 def jobs_detail(request, pk):
     if request.user.is_authenticated:
-        jobs = Job.objects.get(id=pk)
-        return render(request, 'jobs_detail.html', {'jobs': jobs})
+        job = get_object_or_404(Job, id=pk)
+        applications = job.applications.all()
+        candidates = Candidate.objects.all()
+        return render(request, 'jobs_detail.html', {'job': job, 'candidates': candidates, 'applications': applications})
     else:
-        messages.success(request, 'You must be logged in to view Jobs.')
+        messages.error(request, 'You must be logged in to view Jobs.')
         return redirect('home')
     
 def delete_job(request, pk):
@@ -151,3 +154,16 @@ def update_job(request, pk):
 	else:
 		messages.success(request, 'You must be logged in to update jobs.')
 		return redirect('home')
+
+def apply_to_job(request, job_id, candidate_id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            candidate_id = request.POST.get('candidate_id')
+        job = get_object_or_404(Job, id=job_id)
+        candidate = get_object_or_404(Candidate, id=candidate_id)
+        Application.objects.get_or_create(job=job, candidate=candidate)
+        messages.success(request, 'Application successfully submitted!')
+        return redirect('jobs_detail', pk=job_id)
+    else:
+        messages.success(request, 'You must be logged in.')
+        return redirect('home')

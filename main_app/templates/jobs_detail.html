@@ -1,35 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% block content %}
 
 <div class="card">
     <div class="card-header">
-        <strong>
-          {{ jobs.name }} 
-        </strong>
+        <strong>{{ job.name }}</strong>
     </div>
+
     <div class="card-body">
-  
-  <p class="card-text">
-  <strong>Company: </strong>{{ jobs.company }}</p>
-  
-  <p class="card-text">
-  <strong>City: </strong>{{ jobs.city }}</p>
-
-  <p class="card-text">
-  <strong>Created At: </strong>{{ jobs.created_at }}</p>
-  
-  <p class="card-text">
-  <strong>ID: </strong>{{ jobs.id }}</p>
-      
+        <p><strong>Company:</strong> {{ job.company }}</p>
+        <p><strong>City:</strong> {{ job.city }}</p>
+        <p><strong>Created At:</strong> {{ job.created_at }}</p>
+        <p><strong>ID:</strong> {{ job.id }}</p>
     </div>
-  </div>
+</div>
 
-  <br>
+<br>
+<h3>Current Applications:</h3>
+<ul>
+    {% for application in applications %}
+        <li>
+            {{ application.candidate.first_name }} {{ application.candidate.last_name }}
+        </li>
+    {% empty %}
+        <li>No applications yet.</li>
+    {% endfor %}
+</ul>
 
-<a href="{% url 'update_job' jobs.id %}" class="btn btn-primary">Update</a>
+<h3>Add Application:</h3>
+<form method="post" action="{% url 'apply_to_job' job.id 0 %}">
+    {% csrf_token %}
+    <select name="candidate_id">
+        {% for candidate in candidates %}
+            <option value="{{ candidate.id }}">{{ candidate.first_name }} {{ candidate.last_name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Apply</button>
+</form>
+<br>
 
+<a href="{% url 'update_job' job.id %}" class="btn btn-primary">Update</a>
 <a href="{% url 'jobs' %}" class="btn btn-secondary">Back</a>
-
-<a href="{% url 'delete_job' jobs.id %}" class="btn btn-danger">Delete</a>
-
+<a href="{% url 'delete_job' job.id %}" class="btn btn-danger">Delete</a>
 {% endblock %}

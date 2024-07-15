@@ -25,7 +25,6 @@ class Job(models.Model):
     name = models.CharField(max_length=50)
     company = models.CharField(max_length=50)
     city =  models.CharField(max_length=50)
-    candidates = models.ManyToManyField(Candidate)
     
     def __str__(self): 
         return(f'{self.name}')
@@ -34,3 +33,13 @@ class Job(models.Model):
         return reverse('job.html', kwargs={'job_id': self.id})
 
 
+class Application(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applications')
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='applications')
+    applied_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('job', 'candidate')
+        
+    def __str__(self): 
+        return f"{self.candidate} applied to {self.job}"
